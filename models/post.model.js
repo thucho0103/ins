@@ -1,19 +1,16 @@
-var express = require('express');
+const mongoose = require("mongoose");
+const mongoString = "mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority";
 
-var mongoose = require('mongoose');
+mongoose.connect(mongoString, {useNewUrlParser: true, useUnifiedTopology: true});
 
-// mongoose.connect('mongodb://localhost:27017/demo', {useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect('momongodb+srv://movie:admin@cluster0-wmjev.gcp.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
-const connectionString = 'momongodb+srv://movie:admin@cluster0-wmjev.gcp.mongodb.net/test?retryWrites=true&w=majority';
-mongoose
-    .connect(connectionString, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useFindAndModify: false
-    })
-    .then(() => console.log('Database connected.'))
-    .catch(err => console.log(err));
+mongoose.connection.on("error", function(error) {
+    console.log("Có lỗi");
+  console.log(error)
+});
 
+mongoose.connection.on("open", function() {
+  console.log("Connected to MongoDB database.")
+});
 
 var PostSchema = new mongoose.Schema({
     userId: String,

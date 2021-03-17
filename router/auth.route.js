@@ -1,7 +1,6 @@
 var express = require('express');
 var route = express.Router();
 
-var validate = require('../validate/user.validate');
 var controller = require('../controller/auth.controller');
 var authMiddleware = require('../middlewares/auth.middlerware');
 
