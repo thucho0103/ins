@@ -23,8 +23,6 @@ module.exports.login = function (req, res) {
 module.exports.postLogin = function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body.email);
-    console.log(req.body.password);
     Users.findOne({ email: email })
         .then(user => {
             if (!user) {
@@ -34,10 +32,9 @@ module.exports.postLogin = function (req, res) {
             bcrypt.compare(password, user.password)
                 .then(doMatch => {
                     if (doMatch) {
-                        res.cookie('userId', user._id);
                         //return res.redirect('/');
                         const token = encodedToken(user._id,user.email);
-                        res.setHeader('accessToken', token);
+                        //res.setHeader('accessToken', token);
                         return res.status(200).json({
                             status: 200, data: {
                                 'accessToken': token
@@ -49,7 +46,7 @@ module.exports.postLogin = function (req, res) {
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(500).json({ data: err });
+                    res.status(500).json({ data: "có lỗi"+ err });
                 })
         })
         .catch(err => {
