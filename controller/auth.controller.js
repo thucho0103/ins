@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const JWT = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-var sendpulse = require('sendpulse-api');
 
 const { JWT_SECRET } = require('../middlewares/jwt.middlerware');
 

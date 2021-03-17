@@ -36,6 +36,10 @@ app.use(cookieParser());
 
 app.use('/users',passport.authenticate('jwt',{session : false}),usersRoute);
 
+app.get('/',(req,res)=>{
+    res.send("hello");
+})
+
 //app.use('/post',postRoute);
 app.use('/post',passport.authenticate('jwt',{session : false}),postRoute);
 app.use('/auth',authRoute);
