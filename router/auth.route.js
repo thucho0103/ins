@@ -2,11 +2,9 @@ var express = require('express');
 var route = express.Router();
 
 var controller = require('../controller/auth.controller');
-var authMiddleware = require('../middlewares/auth.middlerware');
 
 var passport = require('passport');
 const passportConfig = require('../middlewares/passport.middleware');
-// route.get('/',authMiddleware.requireAuth,controller.index);
 
 route.get('/',controller.auth);
 route.get('/login',controller.login);

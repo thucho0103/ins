@@ -1,18 +1,11 @@
 const Users = require('../models/users.model');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const JWT = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const helps = require('../helpers/jwt.helpers');
 
-const { JWT_SECRET } = require('../middlewares/jwt.middlerware');
-
-const encodedToken = (userId,Mail) => {
-    return JWT.sign({
-        sub: userId,
-        iat: new Date().getTime(),
-        exp: new Date().setDate(new Date().getDate() + 1)
-    }, JWT_SECRET)
-};
+const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 module.exports.auth = function (req, res) {
     res.render('auth/listUser');
@@ -32,21 +25,22 @@ module.exports.postLogin = function (req, res) {
             bcrypt.compare(password, user.password)
                 .then(doMatch => {
                     if (doMatch) {
-                        //return res.redirect('/');
-                        const token = encodedToken(user._id,user.email);
-                        //res.setHeader('accessToken', token);
-                        return res.status(200).json({
-                            status: 200, data: {
-                                'accessToken': token
-                            }, message: "suscess"
-                        });
+                        return helps.generateToken(user, accessTokenSecret, accessTokenLife); 
                     }
                     //return res.render('auth/login',{errors:'Mật khẩu không đúng', values:email});
                     return res.status(401).json({ status: 401, data: {}, message: "Invalid password." });
                 })
+                .then(accessToken =>{
+                    //console.log(accessToken);
+                    return res.status(200).json({
+                        status: 200, data: {
+                            'accessToken': "Bearer " + accessToken
+                        }, message: "suscess"
+                    });
+                })
                 .catch(err => {
                     console.log(err);
-                    res.status(500).json({ data: "có lỗi"+ err });
+                    res.status(500).json({ data: "có lỗi "+ err });
                 })
         })
         .catch(err => {

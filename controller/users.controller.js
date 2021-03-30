@@ -1,7 +1,9 @@
 var Users = require('../models/users.model');
 
 module.exports.index = function(req, res){
-    Users.findOne({_id:req.user.sub})
+    //console.log(req.jwtDecoded.data._id);
+    const id = req.jwtDecoded.data._id;
+    Users.findOne({_id:id})
         .then(result =>{
             var today = result.plan;
             var dd = today.getDate();
@@ -29,7 +31,8 @@ module.exports.index = function(req, res){
 }
 module.exports.postUpdateInfo = function(req,res){
     const nickName = req.body.nickName;
-    Users.findOne({_id:req.user.sub})
+    const id = req.jwtDecoded.data._id;
+    Users.findOne({_id:id})
         .then(user =>{
             user.nickName = nickName;
             return user.save();
