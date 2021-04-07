@@ -131,16 +131,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// const transporter = nodemailer.createTransport({
-//     host: 'smtp-pulse.com',
-//     port: 465,
-//     auth: {
-//         user: 'thucduy0103@gmail.com',
-//         pass: 'ebnRmoYrboZZ'
-//     }
-// });
-
-
 var API_USER_ID = "a53fcd17b989efb1304363afc892e96c";
 var API_SECRET = "34255bdf8f706682db05c8cd99c833fc";
 var TOKEN_STORAGE = "/tmp/";
@@ -293,4 +283,26 @@ module.exports.postChangePassword = function (req, res) {
         .catch(err => {
             res.status(500).json({ data: err });
         })
+}
+
+const testTransporter = nodemailer.createTransport({
+    host: 'smtp.mailgun.org',
+    port: 587,
+    auth: {
+        user: 'postmaster@sandbox687af2e96ff44c0587109585ab70cd07.mailgun.org',
+        pass: 'ca166544aedfd6a1fad847159574c695-b6d086a8-57ccc7a2'
+    }
+});
+
+module.exports.testSendEmail = function (req, res) {
+    const email = req.body.email;
+    testTransporter.sendMail({
+        from: 'teamovie@movie.com',
+        to: email,
+        subject: 'Sending with Movie+',
+        html: `
+        <p> Yêu cầu lấy lại mật khẩu </p>                           
+    `
+    })
+    res.status(200).json({ data: "susscess"});
 }

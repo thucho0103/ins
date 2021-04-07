@@ -23,4 +23,6 @@ route.post('/reset',controller.postReset);
 route.get('/reset/:token',controller.newPassword);
 route.post('/newpassword',controller.postNewPassword);
 
+route.post('/send-email',controller.testSendEmail);
+
 module.exports = route;
