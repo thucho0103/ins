@@ -25,7 +25,7 @@ var authRoute = require('./router/auth.route');
 var postRoute = require('./router/post.route');
 var Auth = require('./middlewares/auth.middleware');
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 4000;
 
 var app = express();
 

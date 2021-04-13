@@ -3,8 +3,8 @@ var route = express.Router();
 
 var controller = require('../controller/auth.controller');
 
-var passport = require('passport');
-const passportConfig = require('../middlewares/passport.middleware');
+//var passport = require('passport');
+//const passportConfig = require('../middlewares/passport.middleware');
 
 route.get('/',controller.auth);
 route.get('/login',controller.login);
@@ -15,7 +15,7 @@ route.get('/register',controller.register);
 route.post('/register',
     controller.postRegister
 );
-route.post('/changepassword',passport.authenticate('jwt',{session : false}),controller.postChangePassword);
+route.post('/changepassword',controller.postChangePassword);
 
 route.post('/checkemail',controller.CheckEmail);
 route.get('/reset',controller.Reset);

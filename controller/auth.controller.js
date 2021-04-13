@@ -14,7 +14,7 @@ module.exports.login = function (req, res) {
     res.render('auth/login', { errors: '0', values: '' });
 }
 module.exports.postLogin = function (req, res) {
-    const email = req.body.email;
+    const email = req.body.username;
     const password = req.body.password;
     Users.findOne({ email: email })
         .then(user => {
