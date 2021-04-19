@@ -3,9 +3,9 @@ const Users = require('../models/users.model');
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
-    cloud_name: "teadragon",
-    api_key: "386395173315668",
-    api_secret: "f8ONL6MecGe2rHOVY4jklUqmkdw"
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
 });
 
 module.exports.GetAllPost = function(req, res){

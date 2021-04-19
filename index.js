@@ -8,7 +8,7 @@ require('dotenv').config()
 var passport = require('passport');
 
 //mongoose.connect("mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
-const mongoString = "mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority";
+const mongoString = process.env.MONGO_DB_CONNECT;
 mongoose.connect(mongoString, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connection.on("error", function(error) {
     console.log("Có lỗi");
@@ -20,6 +20,7 @@ mongoose.connection.on("open", function() {
 });
 
 
+var smsRoute = require('./router/sms.route');
 var usersRoute = require('./router/users.route');
 var authRoute = require('./router/auth.route');
 var postRoute = require('./router/post.route');
@@ -41,6 +42,7 @@ app.get('/',(req,res)=>{
     res.send("hello");
 });
 
+app.use('/sms',smsRoute);
 app.use('/auth',authRoute);
 //app.use('/post',postRoute);
 app.use(Auth.isAuth);

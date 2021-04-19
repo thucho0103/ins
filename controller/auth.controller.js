@@ -14,9 +14,9 @@ module.exports.login = function (req, res) {
     res.render('auth/login', { errors: '0', values: '' });
 }
 module.exports.postLogin = function (req, res) {
-    const email = req.body.username;
+    const username = req.body.username;
     const password = req.body.password;
-    Users.findOne({ email: email })
+    Users.findOne({ username: username })
         .then(user => {
             if (!user) {
                 //return res.render('auth/login',{errors:'Email không tồn tại', values:email});
@@ -77,30 +77,28 @@ module.exports.CheckEmail = function (req, res) {
 }
 
 module.exports.postRegister = function (req, res) {
-    var email = req.body.email;
+    var username = req.body.username;
     const password = req.body.password;
     const confirmPW = req.body.confirm_password;
     if (password != confirmPW) {
         //res.render('auth/register',{errors:"xác nhận mật khẩu không thành công"});       
         return res.status(500).json({ message: "xác nhận mật khẩu không thành công" });
     }
-    Users.findOne({ email: email })
+    Users.findOne({ username: username })
         .then(userDoc => {
             if (userDoc) {
-                var error = "email " + email + " đã tồn tại.";
+                var error = "username " + username + " đã tồn tại.";
                 //res.render('auth/register', { errors : error});               
                 return res.status(500).json({ status: 500, data: {}, message: error });
             }
-            console.log(password);
+            //console.log(password);
             return bcrypt.hash(password, 12);
         })
         .then(hashPassword => {
             const user = new Users({
-                email: req.body.email,
-                nickName: req.body.nickname,
+                username: req.body.username,
                 password: hashPassword,
-                dateCreate: new Date().toDateString(),
-                plan : new Date().setDate(new Date().getDate() + 3)
+                dateCreate: new Date().toDateString()
             });
             return user.save();
         })

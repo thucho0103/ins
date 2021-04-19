@@ -7,11 +7,9 @@ var controller = require('../controller/auth.controller');
 //const passportConfig = require('../middlewares/passport.middleware');
 
 route.get('/',controller.auth);
-route.get('/login',controller.login);
-route.post('/login',controller.postLogin);
-route.get('/logout',controller.logout);
 
-route.get('/register',controller.register);
+route.post('/login',controller.postLogin);
+
 route.post('/register',
     controller.postRegister
 );

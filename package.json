@@ -9,6 +9,7 @@
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@sendgrid/mail": "^6.5.5",
+    "@vonage/server-sdk": "^2.10.7",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -30,6 +31,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "sendpulse-api": "^1.1.4",
-    "sha256": "^0.2.0"
+    "sha256": "^0.2.0",
+    "twilio": "^3.60.0"
   }
 }
