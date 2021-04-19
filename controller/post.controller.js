@@ -28,13 +28,20 @@ module.exports.GetAllPost = function(req, res){
 
 module.exports.Create = function(req, res){     
     console.log(req.body); 
-    Users.findOne({_id:req.user.sub})
+    console.log(req.jwtDecoded.data._id);
+    Users.findOne({_id:req.jwtDecoded.data._id})
         .then(data=>{
             const newPost = new Post({
                 userId : data._id,
+                title : req.body.title,
                 content: req.body.content,
-                description : req.body.description,
+                phone_number : req.body.phone_number,
                 list_pictures : req.body.list_pictures,
+                company_name : req.body.company_name,
+                device_name : req.body.device_name,
+                status : req.body.status,
+                capacity : req.body.capacity,
+                address : req.body.address,
                 dateUpload: new Date().getTime(),
             });
             newPost.save();  
