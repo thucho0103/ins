@@ -1,42 +1,3 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/mean
-# Edit at https://www.toptal.com/developers/gitignore?templates=mean
-
-### MEAN ###
-# MEAN Stack Base
-
-### MEAN.Anglar Stack ###
-## Angular ##
-# compiled output
-dist/
-tmp/
-app/**/*.js
-app/**/*.js.map
-
-# dependencies
-node_modules/
-bower_components/
-
-# IDEs and editors
-.idea/
-
-# misc
-.sass-cache/
-connect.lock/
-coverage/
-libpeerconnection.log/
-npm-debug.log
-testem.log
-typings/
-
-# e2e
-e2e/*.js
-e2e/*.map
-
-# System Files
-.DS_Store/
-
-### MEAN.Node Stack ###
 # Logs
 logs
 *.log
@@ -77,9 +38,11 @@ bower_components
 build/Release
 
 # Dependency directories
+node_modules/
 jspm_packages/
 
-# TypeScript v1 declaration files
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -111,9 +74,11 @@ jspm_packages/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+.parcel-cache
 
 # Next.js build output
 .next
+out
 
 # Nuxt.js build / generate output
 .nuxt
@@ -143,4 +108,9 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# End of https://www.toptal.com/developers/gitignore/api/mean
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
