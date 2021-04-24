@@ -45,8 +45,8 @@ app.get('/',(req,res)=>{
 app.use('/sms',smsRoute);
 app.use('/auth',authRoute);
 //app.use('/post',postRoute);
-app.use(Auth.isAuth);
 app.use('/post',postRoute);
+app.use(Auth.isAuth);
 app.use('/users',usersRoute);
 
 
