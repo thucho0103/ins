@@ -3,13 +3,8 @@ const mongoose = require("mongoose");
 var PostSchema = new mongoose.Schema({
     userId: String,
     title:String,
-    content :String,
-    phone_number: String,
-    list_pictures: [String],
-    company_name:String,
-    device_name:String,
-    status:String,
-    capacity:String,
+    picture :String,
+    price : String,
     address: String,
     dateUpload: Date,
 });

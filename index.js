@@ -9,7 +9,7 @@ var passport = require('passport');
 
 //mongoose.connect("mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 const mongoString = process.env.MONGO_DB_CONNECT;
-mongoose.connect(mongoString, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 mongoose.connection.on("error", function(error) {
     console.log("Có lỗi");
   console.log(error)

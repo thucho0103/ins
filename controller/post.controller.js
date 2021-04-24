@@ -9,18 +9,18 @@ cloudinary.config({
 });
 
 module.exports.GetAllPost = function(req, res){
-    var perPage = 8;
-    var page = req.query.page || 1;
-    Post.find({})
+    var perPage = parseInt(req.query.limit);
+    var page = parseInt(req.query.page);
+    Post.find()
         .skip((perPage * page) - perPage)
         .limit(perPage)
-        .exec(function(err,data){
+        .exec(function(err,list_data){
             Post.countDocuments({}).exec(function(err,count){
                 if (err) {
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }
-                else{
-                    return res.status(200).json({status:200,data:data,message:"success"});       
+                else{                    
+                    return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
                 }               
             })
         });  
@@ -50,6 +50,47 @@ module.exports.Create = function(req, res){
         .catch(err =>{            
             return res.status(500).json({status:500,data:err,message:"error"});
         });   
+}
+
+const cheerio = require('cheerio'),
+    axios = require('axios'),
+    url = `https://www.chotot.com/toan-quoc/mua-ban-do-dien-tu`;
+
+module.exports.Crawl = function(req, res){     
+    axios.get(url)
+    .then((response) => {
+        let $ = cheerio.load(response.data);
+
+        var arr = [];
+        //console.log($('.wrapperAdItem___2woJ1 > a > div > div > div > noscript').text());    
+        $('.wrapperAdItem___2woJ1 > a').each(function (i, e) {   
+            
+            const imgtag = $(e).find('div > div > div > noscript').text();
+            const img = imgtag.slice($(e).text().indexOf('src=')+5);
+
+            const title = $(e).find('.adTitle___3SoJh').text();
+            const price = $(e).find('.adPriceNormal___puYxd').text();        
+            var post = {
+                picture :img.slice(img,img.indexOf('"')),
+                title :title,
+                price :price,
+                address :'Hồ Chí Minh',
+                dateUpload:new Date().getTime(),
+            }  
+            arr.push(post);           
+        })
+        return arr;
+    })
+    .then(array=>{         
+        Post.insertMany(array).then(function(){
+            console.log("Data inserted")  // Success
+        }).catch(function(error){
+            console.log(error)      // Failure
+        });
+    })
+    .catch(function (e) {
+        console.log(e);
+    });  
 }
 
 module.exports.UploadImage = function(req, res){
