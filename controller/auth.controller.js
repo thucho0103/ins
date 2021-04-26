@@ -14,9 +14,9 @@ module.exports.login = function (req, res) {
     res.render('auth/login', { errors: '0', values: '' });
 }
 module.exports.postLogin = function (req, res) {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
-    Users.findOne({ username: username })
+    Users.findOne({ email: email })
         .then(user => {
             if (!user) {
                 //return res.render('auth/login',{errors:'Email không tồn tại', values:email});
@@ -31,16 +31,17 @@ module.exports.postLogin = function (req, res) {
                     return res.status(401).json({ status: 401, data: {}, message: "Invalid password." });
                 })
                 .then(accessToken =>{
-                    //console.log(accessToken);
-                    return res.status(200).json({
-                        status: 200, data: {
-                            'accessToken': "Bearer " + accessToken
-                        }, message: "suscess"
-                    });
+                    //console.log(accessToken);                  
+                    var userLogin = user.toObject();  
+                    userLogin.accessToken = accessToken;      
+                    Reflect.deleteProperty(userLogin, 'password');
+                    Reflect.deleteProperty(userLogin, '__v');   
+                    console.log(userLogin);              
+                    return res.status(200).json({status: 200, data: userLogin, message: "suscess"});
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(500).json({ data: "có lỗi "+ err });
+                    return res.status(500).json({ data: "có lỗi "+ err });
                 })
         })
         .catch(err => {
@@ -79,9 +80,7 @@ module.exports.CheckEmail = function (req, res) {
 module.exports.postRegister = function (req, res) {
 
     const { email, first_name,last_name,phone,gender ,address,password } = req.body;
-
     var user = req.body;
-
     Users.findOne({ email: email })
         .then(userDoc => {
             if (userDoc) {
@@ -99,6 +98,7 @@ module.exports.postRegister = function (req, res) {
         .then(result => {
             //res.redirect('/auth/login');
             var user = result.toObject();
+            user.accessToken = helps.generateToken(user, accessTokenSecret, accessTokenLife);
             Reflect.deleteProperty(user, 'password');
             Reflect.deleteProperty(user, '__v');
             res.status(200).json({status: 200, data: user, message: "success" });
