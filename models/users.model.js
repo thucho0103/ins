@@ -11,7 +11,9 @@ var userSchema = new mongoose.Schema({
     dateCreate : String,
     resetToken: String,
     resetTokenExp: Date
-})
+},{
+    versionKey: false // You should be aware of the outcome after set to false
+});
 // var list = mongoose.model('list', listSchema);
 var Users = mongoose.model('Users',userSchema, 'users');
 

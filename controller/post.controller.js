@@ -9,8 +9,8 @@ cloudinary.config({
 });
 
 module.exports.GetAllPost = function(req, res){
-    var perPage = parseInt(req.query.limit);
-    var page = parseInt(req.query.page);
+    var perPage = parseInt(req.query.limit) || 10;
+    var page = parseInt(req.query.page) || 1;
     Post.find()
         .skip((perPage * page) - perPage)
         .limit(perPage)
@@ -27,25 +27,21 @@ module.exports.GetAllPost = function(req, res){
 }
 
 module.exports.Create = function(req, res){     
-    console.log(req.body); 
+    //console.log(req.body); 
     console.log(req.jwtDecoded.data._id);
     Users.findOne({_id:req.jwtDecoded.data._id})
         .then(data=>{
-            const newPost = new Post({
-                userId : data._id,
-                title : req.body.title,
-                content: req.body.content,
-                phone_number : req.body.phone_number,
-                list_pictures : req.body.list_pictures,
-                company_name : req.body.company_name,
-                device_name : req.body.device_name,
-                status : req.body.status,
-                capacity : req.body.capacity,
-                address : req.body.address,
-                dateUpload: new Date().getTime(),
-            });
-            newPost.save();  
-            return res.status(200).json({status:200,data:null,message:"success"});            
+            const newPost = req.body;
+            var addPost = {user_id:data._id,date_upload:new Date().getTime()};
+            const returnedTarget = Object.assign(newPost, addPost);
+            //console.log(returnedTarget);
+            Post.create(returnedTarget)
+            .then(result=>{
+                return res.status(200).json({status:200,data:result,message:"success"});      
+            })
+            .catch(err=>{
+                return res.status(500).json({status:500,data:err,message:"error"});
+            });          
         })
         .catch(err =>{            
             return res.status(500).json({status:500,data:err,message:"error"});

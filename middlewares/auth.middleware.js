@@ -25,13 +25,17 @@ module.exports.isAuth = async (req,res,next)=>{
           // Lưu ý trong dự án thực tế hãy bỏ dòng debug bên dưới, mình để đây để debug lỗi cho các bạn xem thôi
           console.log("Error while verify token:", error);
           return res.status(401).json({
+            status:"401",
             message: 'Unauthorized.',
+            data:"",
           });
         }
       } else {
         // Không tìm thấy token trong request
-        return res.status(403).send({
+        return res.status(403).send({     
+          status:"403",
           message: 'No token provided.',
+          data:"",   
         });
       }
 }

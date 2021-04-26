@@ -7,22 +7,20 @@ var PostSchema = new mongoose.Schema({
     price : String,
     content:String,
     details:{
-        brand:String,
+        brand:String, 
         model:String,
-        year:String,
+        production_location:String,
         km_used:Number,
         status:String,
-        gear:String,
         fuel:String,
-        origin: String,
-        designs:String,
-        seat : Number,  
         capacity:String,
         color:String,   
     },
     phone_number:String,
     address: String,
     date_upload: Date,
+},{
+    versionKey: false // You should be aware of the outcome after set to false
 });
 // var list = mongoose.model('list', listSchema);
 var Comment = mongoose.model('Post',PostSchema, 'post');

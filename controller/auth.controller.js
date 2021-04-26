@@ -78,9 +78,8 @@ module.exports.CheckEmail = function (req, res) {
 }
 
 module.exports.postRegister = function (req, res) {
-
     const { email, first_name,last_name,phone,gender ,address,password } = req.body;
-    var user = req.body;
+    var user = req.body;   
     Users.findOne({ email: email })
         .then(userDoc => {
             if (userDoc) {
@@ -100,8 +99,7 @@ module.exports.postRegister = function (req, res) {
             var user = result.toObject();
             user.accessToken = helps.generateToken(user, accessTokenSecret, accessTokenLife);
             Reflect.deleteProperty(user, 'password');
-            Reflect.deleteProperty(user, '__v');
-            res.status(200).json({status: 200, data: user, message: "success" });
+            return res.status(200).json({status: 200, data: user, message: "success" });
         })
         .catch(err => {
             return res.status(500).json({ status: 500, data: {}, message: err });
