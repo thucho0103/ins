@@ -16,7 +16,6 @@ route.post('/register',
 route.post('/changepassword',controller.postChangePassword);
 
 route.post('/checkemail',controller.CheckEmail);
-route.get('/reset',controller.Reset);
 route.post('/reset',controller.postReset);
 route.get('/reset/:token',controller.newPassword);
 route.post('/newpassword',controller.postNewPassword);

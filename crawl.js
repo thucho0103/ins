@@ -2,12 +2,11 @@ const Post = require('./models/post.model');
 
 const cheerio = require('cheerio'),
     axios = require('axios'),
-    url = `https://www.chotot.com/toan-quoc/mua-ban-do-dien-tu`;
+    url = `https://xe.chotot.com/mua-ban-xe`;
 
 axios.get(url)
     .then((response) => {
         let $ = cheerio.load(response.data);
-
         var arr = [];
         //console.log($('.wrapperAdItem___2woJ1 > a > div > div > div > noscript').text());    
         $('.wrapperAdItem___2woJ1 > a').each(function (i, e) {   
@@ -27,19 +26,7 @@ axios.get(url)
             }  
             arr.push(post);           
         })
-        return arr.slice(0,1);
-    })
-    .then(array=>{         
-        Post.find({}).then(function(data){
-            console.log(data)  // Success
-        }).catch(function(error){
-            console.log(error)      // Failure
-        });
-        // Post.insertMany(array).then(function(){
-        //     console.log("Data inserted")  // Success
-        // }).catch(function(error){
-        //     console.log(error)      // Failure
-        // });
+        console.log(arr);
     })
     .catch(function (e) {
         console.log(e);

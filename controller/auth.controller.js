@@ -77,17 +77,15 @@ module.exports.CheckEmail = function (req, res) {
 }
 
 module.exports.postRegister = function (req, res) {
-    var username = req.body.username;
-    const password = req.body.password;
-    const confirmPW = req.body.confirm_password;
-    if (password != confirmPW) {
-        //res.render('auth/register',{errors:"xác nhận mật khẩu không thành công"});       
-        return res.status(500).json({ message: "xác nhận mật khẩu không thành công" });
-    }
-    Users.findOne({ username: username })
+
+    const { email, first_name,last_name,phone,gender ,address,password } = req.body;
+
+    var user = req.body;
+
+    Users.findOne({ email: email })
         .then(userDoc => {
             if (userDoc) {
-                var error = "username " + username + " đã tồn tại.";
+                var error = "email " + email + " đã tồn tại.";
                 //res.render('auth/register', { errors : error});               
                 return res.status(500).json({ status: 500, data: {}, message: error });
             }
@@ -95,30 +93,20 @@ module.exports.postRegister = function (req, res) {
             return bcrypt.hash(password, 12);
         })
         .then(hashPassword => {
-            const user = new Users({
-                username: req.body.username,
-                password: hashPassword,
-                dateCreate: new Date().toDateString()
-            });
-            return user.save();
+            user.password = hashPassword;
+            return Users.create(user);
         })
         .then(result => {
             //res.redirect('/auth/login');
-            res.status(200).json({ data: "suscess" });
+            var user = result.toObject();
+            Reflect.deleteProperty(user, 'password');
+            Reflect.deleteProperty(user, '__v');
+            res.status(200).json({status: 200, data: user, message: "success" });
         })
         .catch(err => {
-            res.status(500).json({ data: err });
-            return console.log(err);
+            return res.status(500).json({ status: 500, data: {}, message: err });
         })
 }
-
-module.exports.Reset = function (req, res) {
-    res.render('auth/reset', { errors: '0', values: '' });
-}
-
-const sgMail = require('@sendgrid/mail');
-//sgMail.setApiKey('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');
-
 
 const transporter = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
@@ -138,88 +126,8 @@ var TOKEN_STORAGE = "/tmp/";
 // });
 
 module.exports.postReset = function (req, res) {
-    const email = req.body.email;
-    sgMail.setApiKey('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');
-    crypto.randomBytes(32, (err, Buffer) => {
-        if (err) {
-            console.log(err);
-            //return redirect('auth/reset');
-            return res.status(500).json({ data: err });
-        }
-        const token = Buffer.toString('hex');
-        Users.findOne({ email: email })
-            .then(user => {
-                if (user) {
-                    user.resetToken = token;
-                    user.resetTokenExp = Date.now() + 3600000;
-                    return user.save();
-                }
-                //return res.render('auth/reset',{errors:'Email không tồn tại trong hệ thống',values:email});
-                return res.status(200).json({ data: "Email không tồn tại trong hệ thống" });
-            })
-            .then(result => {
-                if (result) {                                      
-                    // send email
-                    transporter.sendMail({
-                        from: 'teamovie@movie.com',
-                        to: email,
-                        subject: 'Sending with Movie+',
-                        html: `
-                        <p> Yêu cầu lấy lại mật khẩu </p>
-                        <p> Click vào <a href="http://localhost:4200/forgotpassword/${token}"> link </a> để tạo mật khẩu mới </p>                    
-                    `
-                    })
-                    //res.render('auth/reset',{errors:'Gửi thành công!',values:email});                   
-                    // const msg = {
-                    //     to: email,
-                    //     from: 'test@example.com',
-                    //     subject: 'Sending with Movie+',
-                    //     html: `
-                    //     <p> Yêu cầu lấy lại mật khẩu </p>
-                    //     <p> Click vào <a href="https://teamovie.herokuapp.com/auth/reset/${token}"> link </a> để tạo mật khẩu mới </p>                    
-                    // `
-                    // };
-                    // sgMail.send(msg)
-                    .then(()=>{
-                        res.status(200).json({ data: "Gửi thành công!","token":token });
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        res.status(500).json({ data: "Gửi lỗi"});
-                    });
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({ data: err });
-            })
-    });
+    return res.status(200).json({ data: "postReset" });
 }
-
-// module.exports.postReset = function(req,res){
-//     var email = req.body.email;
-//     console.log(email);
-//     Users.find({email:email},function(err,data){
-//         console.log(data);
-//         if(data.length){
-//             var key = Math.random().toString(36).substr(2, 6);
-//             const msg = {
-//             to: email,
-//             from: 'teadragon@movie.com',
-//             subject: 'Sending with Movie+',
-//             text: 'key'+ key,
-//             html: '<div> mật khẩu mới của bạn là <strong> '+ key +'</strong> mời bạn đăng nhập ở hệ thống </div>',
-//             };
-//             sgMail.send(msg);
-//             Users.findOneAndUpdate({email:email},{password:key},function(err,data){
-//                 if (err) throw err;
-//                 res.render('auth/result');
-//             });
-//         } else {
-//             res.render('auth/err',{error : "email không tồn tại"});
-//         }
-//     });
-// }
 module.exports.newPassword = function (req, res) {
     const token = req.params.token;
     Users.findOne({ resetToken: token })

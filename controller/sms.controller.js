@@ -1,18 +1,3 @@
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-//const client = require('twilio')(accountSid, authToken);
-
-
-const Vonage = require('@vonage/server-sdk')
-
-const vonage = new Vonage({
-  apiKey: "d390affa",
-  apiSecret: "VtX54Qs1nyo9zyRN"
-})
-
-const from = "Vonage APIs"
-const to = "84702588767"
-const text = 'A text message sent using the Vonage SMS API'
 
 module.exports.sendSMS = function(req,res){
 	console.log(accountSid,authToken);

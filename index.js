@@ -5,8 +5,6 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors');
 require('dotenv').config()
 
-var passport = require('passport');
-
 //mongoose.connect("mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 const mongoString = process.env.MONGO_DB_CONNECT;
 mongoose.connect(mongoString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
