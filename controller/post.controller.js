@@ -11,7 +11,26 @@ cloudinary.config({
 module.exports.GetAllPost = function(req, res){
     var perPage = parseInt(req.query.limit) || 10;
     var page = parseInt(req.query.page) || 1;
-    Post.find()
+    Post.find({type:req.query.type})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err,list_data){
+            Post.countDocuments({}).exec(function(err,count){
+                if (err) {
+                    return res.status(500).json({status:500,data:err,message:"error"});
+                }
+                else{                    
+                    return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
+                }               
+            })
+        });  
+}
+
+module.exports.GetByType = function(req, res){
+    var perPage = parseInt(req.query.limit) || 10;
+    var page = parseInt(req.query.page) || 1;
+    var type = req.query.type || 1;
+    Post.find({type:type})
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err,list_data){

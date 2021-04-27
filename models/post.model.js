@@ -5,7 +5,7 @@ var PostSchema = new mongoose.Schema({
     type : Number,
     title:String,
     images :[String],
-    price : String,
+    price : Number,
     content:String,
     details:{
         brand:String, 

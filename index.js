@@ -44,10 +44,15 @@ app.use('/sms',smsRoute);
 app.use('/auth',authRoute);
 //app.use('/post',postRoute);
 app.use('/post',postRoute);
-app.use(Auth.isAuth);
+//app.use(Auth.isAuth);
 app.use('/users',usersRoute);
 
-
+app.get('*', function(req, res){
+  return res.status(404).json({status:"404",message: 'Not Found.',data:"",});
+});
+app.post('*', function(req, res){
+  return res.status(404).json({status:"404", message: 'Not Found.',data:"",});
+});
 
 app.listen(port);
 console.log('server running on ' + port);

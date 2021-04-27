@@ -2,8 +2,9 @@ var express = require('express');
 var route = express.Router();
 
 var controller = require('../controller/users.controller');
+var Auth = require('../middlewares/auth.middleware');
 
-route.get('/information',controller.index);
-route.post('/updateinfor',controller.postUpdateInfo);
+route.get('/information',Auth.isAuth,controller.index);
+route.post('/updateinfor',Auth.isAuth,controller.postUpdateInfo);
 
 module.exports = route;
