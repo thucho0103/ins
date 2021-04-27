@@ -97,7 +97,7 @@ module.exports.Crawl = function(req, res){
         });  
 }
 
-module.exports.UploadImage = function(req, res){
+module.exports.UploadImage = function(req, res){   
     cloudinary.uploader.upload(req.body.img)
     .then(result=>{
         console.log(result);
