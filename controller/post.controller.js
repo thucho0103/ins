@@ -19,7 +19,7 @@ module.exports.GetAllPost = function(req, res){
                 if (err) {
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }
-                else{                    
+                else{             
                     return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
                 }               
             })
@@ -35,7 +35,7 @@ module.exports.GetByType = function(req, res){
         .limit(perPage)
         .exec(function(err,list_data){
             Post.countDocuments({}).exec(function(err,count){
-                if (err) {
+                if (err) {                   
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }
                 else{                    
@@ -50,8 +50,9 @@ module.exports.Create = function(req, res){
     console.log(req.jwtDecoded.data._id);
     Users.findOne({_id:req.jwtDecoded.data._id})
         .then(data=>{
+            console.log(data);
             const newPost = req.body;
-            var addPost = {user_id:data._id,date_upload:new Date().getTime()};
+            var addPost = {user_id:data._id,first_name:data.first_name,last_name:data.last_name, date_upload:new Date().getTime()};
             const returnedTarget = Object.assign(newPost, addPost);
             //console.log(returnedTarget);
             Post.create(returnedTarget)
