@@ -28,7 +28,7 @@ var Auth = require('./middlewares/auth.middleware');
 var port = process.env.PORT || 4000;
 
 var app = express();
-
+app.use(express.static('images'));
 app.use(cors());
 
 app.use(bodyParser.json({type: 'application/json'}));
