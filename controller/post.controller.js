@@ -150,7 +150,7 @@ module.exports.UploadImage = function(req, res){
           // An unknown error occurred when uploading.
           return res.status(500).json({status:500,data:err,message:"error"});
         }
-        // console.log(path.resolve(req.file.path)); 
-        return res.status(200).json({status:200,data:path.resolve(req.file.path),message:"success"});
+        //console.log(req.file); 
+        return res.status(200).json({status:200,data:req.file.filename,message:"success"});
       })
 }
