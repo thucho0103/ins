@@ -139,6 +139,8 @@ var storage = multer.diskStorage({
   });
 const upload = multer({ storage: storage }).single('image');
 
+const path = require('path');
+
 module.exports.UploadImage = function(req, res){   
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
@@ -148,6 +150,7 @@ module.exports.UploadImage = function(req, res){
           // An unknown error occurred when uploading.
           return res.status(500).json({status:500,data:err,message:"error"});
         }
-        return res.status(200).json({status:200,data:req.file.path,message:"success"});
+        // console.log(path.resolve(req.file.path)); 
+        return res.status(200).json({status:200,data:path.resolve(req.file.path),message:"success"});
       })
 }
