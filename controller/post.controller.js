@@ -117,13 +117,37 @@ module.exports.Crawl = function(req, res){
         });  
 }
 
+// module.exports.UploadImage = function(req, res){   
+//     cloudinary.uploader.upload(req.body.img)
+//     .then(result=>{
+//         console.log(result);
+//         return res.status(200).json({status:200,data:result.secure_url,message:"success"});
+//     }) 
+//     .catch(err=>{
+//         return res.status(500).json({status:500,data:err,message:"error"});
+//     });   
+// }
+
+const multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'images');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now().toString().concat(file.originalname));
+    }
+  });
+const upload = multer({ storage: storage }).single('image');
+
 module.exports.UploadImage = function(req, res){   
-    cloudinary.uploader.upload(req.body.img)
-    .then(result=>{
-        console.log(result);
-        return res.status(200).json({status:200,data:result.secure_url,message:"success"});
-    }) 
-    .catch(err=>{
-        return res.status(500).json({status:500,data:err,message:"error"});
-    });   
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+          // A Multer error occurred when uploading.
+          return res.status(500).json({status:500,data:err,message:"error"});
+        } else if (err) {
+          // An unknown error occurred when uploading.
+          return res.status(500).json({status:500,data:err,message:"error"});
+        }
+        return res.status(200).json({status:200,data:req.file.path,message:"success"});
+      })
 }

@@ -3,6 +3,7 @@ var bodyParser =require('body-parser');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
+
 require('dotenv').config()
 
 //mongoose.connect("mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
@@ -34,6 +35,7 @@ app.use(bodyParser.json({type: 'application/json'}));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(urlencodedParser);
 app.use(cookieParser());
+
 // app.use(showUser.showUser);
 // Route 
 app.get('/',(req,res)=>{
