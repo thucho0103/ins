@@ -137,16 +137,17 @@ var storage = multer.diskStorage({
       cb(null, Date.now().toString().concat(file.originalname));
     }
   });
-const upload = multer({ storage: storage }).single('image');
+const upload = multer({ storage: storage }).single('send_file');
 
-const path = require('path');
-
-module.exports.UploadImage = function(req, res){   
+module.exports.UploadImage = function(req, res){  
+    //console.log(req); 
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
           // A Multer error occurred when uploading.
+            console.log(err);
           return res.status(500).json({status:500,data:err,message:"error"});
         } else if (err) {
+            console.log(err);
           // An unknown error occurred when uploading.
           return res.status(500).json({status:500,data:err,message:"error"});
         }

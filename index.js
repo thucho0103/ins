@@ -28,7 +28,9 @@ var Auth = require('./middlewares/auth.middleware');
 var port = process.env.PORT || 4000;
 
 var app = express();
+var morgan = require('morgan')
 app.use(express.static('images'));
+app.use(morgan('combined'));
 app.use(cors());
 
 app.use(bodyParser.json({type: 'application/json'}));
