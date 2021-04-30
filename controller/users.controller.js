@@ -1,4 +1,19 @@
 var Users = require('../models/users.model');
+var Post = require('../models/post.model');
+
+
+module.exports.getCountPost = function(req, res){
+    console.log(req.jwtDecoded.data._id);
+    const id = req.jwtDecoded.data._id;
+    Post.countDocuments({user_id:id})
+        .then(count =>{
+            console.log(count);
+            return res.status(200).json({status:200,data:count,message:"success"});
+        })
+        .catch(err=>{
+            return res.status(500).json({status:500,data:err,message:"error"});
+        });
+}
 
 module.exports.index = function(req, res){
     //console.log(req.jwtDecoded.data._id);
