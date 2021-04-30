@@ -155,3 +155,18 @@ module.exports.UploadImage = function(req, res){
         return res.status(200).json({status:200,data:req.file.filename,message:"success"});
       })
 }
+const fs = require('fs');
+
+module.exports.GetImage = function(req, res){  
+    console.log();
+    let directory_name = "images";
+    let filenames = fs.readdirSync(directory_name);
+    //console.log("\nFilenames in directory:");
+    const file_name = filenames.find(element=>element.includes(req.query.file_name));
+    if(file_name){
+        return res.status(200).json({status:200,data:file_name,message:"success"});
+    }
+    else{
+        return res.status(500).json({status:500,data:"not found",message:"error"});
+    }    
+}

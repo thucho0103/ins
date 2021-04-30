@@ -8,6 +8,7 @@ route.get('/get-all',controller.GetAllPost);
 route.get('/get-by-type',controller.GetByType);
 route.post('/create',Auth.isAuth,controller.Create);
 route.post('/upload-image',controller.UploadImage);
+route.get('/get-image',controller.GetImage);
 
 route.get('/crawl',controller.Crawl);
 
