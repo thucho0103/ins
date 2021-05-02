@@ -10,7 +10,7 @@ require('dotenv').config()
 const mongoString = process.env.MONGO_DB_CONNECT;
 mongoose.connect(mongoString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 mongoose.connection.on("error", function(error) {
-    console.log("Có lỗi");
+  console.log("Có lỗi");
   console.log(error)
 });
 

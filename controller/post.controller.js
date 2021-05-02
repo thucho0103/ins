@@ -11,7 +11,13 @@ cloudinary.config({
 module.exports.GetAllPost = function(req, res){
     var perPage = parseInt(req.query.limit) || 10;
     var page = parseInt(req.query.page) || 1;
-    Post.find({})
+    const type = req.query.type || -1; 
+    var typeFilter = {};
+    if (type != -1){
+        typeFilter = {'type':type}
+    }
+    console.log(type);
+    Post.find(typeFilter)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err,list_data){
