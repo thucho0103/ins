@@ -21,7 +21,7 @@ module.exports.GetAllPost = function(req, res){
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err,list_data){
-            Post.countDocuments({}).exec(function(err,count){
+            Post.countDocuments(typeFilter).exec(function(err,count){
                 if (err) {
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }

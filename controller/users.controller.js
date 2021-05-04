@@ -53,3 +53,23 @@ module.exports.postUpdateInfo = function(req,res){
             return res.status(500).send(err);
         })
 }
+
+module.exports.GetAllPost = function(req, res){
+    var perPage = parseInt(req.query.limit) || 10;
+    var page = parseInt(req.query.page) || 1;
+    const id = req.query._id || -1; 
+    console.log(id);
+    Post.find({user_id:id})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err,list_data){
+            Post.countDocuments({user_id:id}).exec(function(err,count){
+                if (err) {
+                    return res.status(500).json({status:500,data:err,message:"error"});
+                }
+                else{             
+                    return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
+                }               
+            })
+        });  
+}
