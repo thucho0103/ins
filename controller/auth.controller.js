@@ -35,8 +35,8 @@ module.exports.postLogin = function (req, res) {
                     var userLogin = user.toObject();  
                     userLogin.accessToken = accessToken;      
                     Reflect.deleteProperty(userLogin, 'password');
-                    Reflect.deleteProperty(userLogin, '__v');   
-                    console.log(userLogin);              
+                    Reflect.deleteProperty(userLogin, '__v');
+                    //console.log(userLogin);              
                     return res.status(200).json({status: 200, data: userLogin, message: "suscess"});
                 })
                 .catch(err => {

@@ -15,30 +15,23 @@ module.exports.getCountPost = function(req, res){
         });
 }
 
-module.exports.index = function(req, res){
+module.exports.getInformation = function(req, res){
     //console.log(req.jwtDecoded.data._id);
     const id = req.jwtDecoded.data._id;
     Users.findOne({_id:id})
         .then(result =>{
-            var today = result.plan;
-            var dd = today.getDate();
-            var mm = today.getMonth()+1; 
-            var yyyy = today.getFullYear();
-            if(dd<10) 
-            {
-                 dd='0'+dd;
-            } 
-            if(mm<10) 
-            {
-                mm='0'+mm;
-            }
-            var user = {
-                email:result.email,
-                nickname:result.nickName,
-                plan: dd+'/'+mm+'/'+yyyy,
-                dateCreate:result.dateCreate
-            }
-            return res.status(200).send(user);
+            var userInfor = result.toObject();   
+            Reflect.deleteProperty(userInfor, 'password');
+            Reflect.deleteProperty(userInfor, '__v'); 
+            Post.countDocuments({user_id:id})
+                .then(count =>{
+                    userInfor.count_post = count;
+                    return res.status(200).json({status:200,data:userInfor,message:"success"});
+                })
+                .catch(err=>{
+                    return res.status(500).json({status:500,data:err,message:"error"});
+                });
+            // return res.status(200).json({status:200,data:userInfor,message:"success"});
         })
         .catch(err=>{
             return res.status(500).send(err);

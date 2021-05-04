@@ -49,7 +49,7 @@ app.use('/auth',authRoute);
 //app.use('/post',postRoute);
 app.use('/post',postRoute);
 //app.use(Auth.isAuth);
-app.use('/users',usersRoute);
+app.use('/user',usersRoute);
 
 app.get('*', function(req, res){
   return res.status(404).json({status:"404",message: 'Not Found.',data:"",});

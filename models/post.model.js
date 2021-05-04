@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { getDateString } = require('../helpers/formatDate.helpers');
 
 var PostSchema = new mongoose.Schema({
     user_id: String,
@@ -22,6 +23,12 @@ var PostSchema = new mongoose.Schema({
     phone_number:String,
     address: String,
     date_upload: Date,
+    dateUpload:{
+        type: String,
+        default: function() {  
+            return getDateString(this.date_upload);
+        }
+    }
 },{
     versionKey: false // You should be aware of the outcome after set to false
 });
