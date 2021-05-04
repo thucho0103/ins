@@ -19,10 +19,7 @@ var PostSchema = new mongoose.Schema({
         fuel:String,
         capacity:String,
         color:String,   
-        status:{
-            type:Number,
-            default: 0
-        }
+        status:String,
     },
     phone_number:String,
     address: String,
