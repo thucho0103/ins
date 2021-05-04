@@ -26,6 +26,10 @@ var PostSchema = new mongoose.Schema({
     },
     phone_number:String,
     address: String,
+    statusbought :{
+        type:Number,
+        default: 0,
+    },
     date_upload: Date,
     dateUpload:{
         type: String,

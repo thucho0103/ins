@@ -35,7 +35,7 @@ module.exports.GetAllPost = function(req, res){
 module.exports.confirmBought = function(req, res){
     Post.findById(req.body._id)
         .then(result=>{
-            result.details.status = 1;
+            result.statusbought = 1;
             result.save();
             //console.log(result);
             return res.status(200).json({status:200,data:result,message:"success"});
