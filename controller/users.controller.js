@@ -17,9 +17,10 @@ module.exports.getCountPost = function(req, res){
 
 module.exports.getInformation = function(req, res){
     //console.log(req.jwtDecoded.data._id);
-    const id = req.jwtDecoded.data._id;
+    const id = req.query._id;
     Users.findOne({_id:id})
         .then(result =>{
+            //console.log(result);
             var userInfor = result.toObject();   
             Reflect.deleteProperty(userInfor, 'password');
             Reflect.deleteProperty(userInfor, '__v'); 
