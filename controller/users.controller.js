@@ -1,7 +1,6 @@
 var Users = require('../models/users.model');
 var Post = require('../models/post.model');
 var Room = require('../models/room.model');
-const short  = require('short-uuid');
 
 module.exports.getCountPost = function(req, res){
     console.log(req.jwtDecoded.data._id);
