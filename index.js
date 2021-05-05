@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors');
 
 require('dotenv').config()
+var PORT = process.env.PORT || 4000;
 
 //mongoose.connect("mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 const mongoString = process.env.MONGO_DB_CONNECT;
@@ -18,14 +19,11 @@ mongoose.connection.on("open", function() {
   console.log("Connected to MongoDB database.")
 });
 
-
 var smsRoute = require('./router/sms.route');
 var usersRoute = require('./router/users.route');
 var authRoute = require('./router/auth.route');
 var postRoute = require('./router/post.route');
 var Auth = require('./middlewares/auth.middleware');
-
-var port = process.env.PORT || 4000;
 
 var app = express();
 var morgan = require('morgan')
@@ -58,5 +56,18 @@ app.post('*', function(req, res){
   return res.status(404).json({status:"404", message: 'Not Found.',data:"",});
 });
 
-app.listen(port);
-console.log('server running on ' + port);
+// app.listen(port);
+var http = require('http').Server(app);
+var io = require('socket.io')(http,{
+  cors: {
+      origin: '*',
+  }
+});
+const onConnection = (socket) => {
+  require('./helpers/socket.messages')(socket);
+}
+
+io.on("connection", onConnection);
+var server = http.listen(PORT, () => {
+  console.log('server is running on port', server.address().port);
+});
