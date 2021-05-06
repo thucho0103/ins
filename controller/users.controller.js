@@ -89,7 +89,32 @@ module.exports.createRoom = function(req, res){
     });   
 }
 
-module.exports.checkRoom = function(req, res){
-    // console.log(short.generate());
-       
+module.exports.getRoom = function(req, res){
+    Room.findOne({
+        $or:[
+        {
+            roomName : req.body.user_first_id + req.body.user_second_id
+        },
+        {
+            roomName : req.body.user_second_id + req.body.user_first_id
+        }]})
+    .then(result=>{
+        if(result){
+            // console.log(result);
+            return res.status(200).json({status:200,data:result,message:"success"});
+        }
+        else{
+            const newRoom = {
+                userFirstId : req.body.user_first_id,
+                userSecondId : req.body.user_second_id,
+                roomName : req.body.user_first_id + req.body.user_second_id,
+            }
+            Room.create(newRoom,function (err,data){
+                return res.status(200).json({status:200,data:data,message:"success"});
+            })
+        }
+    })
+    .catch(err=>{
+        return res.status(500).json({status:500,data:err,message:"error"});
+    });
 }
