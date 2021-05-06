@@ -1,7 +1,8 @@
 module.exports = (socket) => {
 
     const joinRoom = (data) => {
-    //console.log("data");
+      console.log("join_room "+data);
+      console.log( socket.id +" join room " + data.room);
       socket.join(data.room);
     } 
   
@@ -10,6 +11,8 @@ module.exports = (socket) => {
     } 
   
     const chatText = (data) => {
+      console.log("chat_text "+data);
+      console.log( socket.id +"emit chat_text " + data.message);
       socket.to(data.room).emit("chat_text",data);
       //io.to(data.room).emit(data.messages);
     } 
