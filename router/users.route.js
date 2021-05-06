@@ -9,5 +9,6 @@ route.get('/get-count-post',Auth.isAuth,controller.getCountPost);
 route.post('/updateinfor',Auth.isAuth,controller.postUpdateInfo);
 route.get('/all-post',controller.GetAllPost);
 route.post('/create-room',controller.createRoom);
+route.post('/check-room',controller.findRoom);
 
 module.exports = route;

@@ -1,8 +1,8 @@
+const Chat = require('../models/chat.model');
+
 module.exports = (socket) => {
 
     const joinRoom = (data) => {
-      console.log("join_room "+data);
-      console.log( socket.id +" join room " + data.room);
       socket.join(data.room);
     } 
   
@@ -11,13 +11,19 @@ module.exports = (socket) => {
     } 
   
     const chatText = (data) => {
-      console.log("chat_text "+data);
-      console.log( socket.id +"emit chat_text " + data.message);
+      //console.log(data.room);
       socket.to(data.room).emit("chat_text",data);
       //io.to(data.room).emit(data.messages);
+      const newMessage = {
+        room : data.room,
+        messages : data.message,
+        userId : data.user_id,
+        images: data.images,
+      } 
+      Chat.create(newMessage);
     } 
     const chatImage = (data) => {
-    //   io.to(data.room).emit(data.messages);
+      //io.to(data.room).emit(data.messages);
     } 
   
     socket.on("join_room", joinRoom);

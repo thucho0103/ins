@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 var chatSchema = new mongoose.Schema({
-    userFirstId : String,
-    userSecondId : String,
     room : String,
     messages: String,
+    userId:String,
+    images:[String]
 },{
     versionKey: false // You should be aware of the outcome after set to false
 });

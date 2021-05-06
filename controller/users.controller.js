@@ -88,3 +88,8 @@ module.exports.createRoom = function(req, res){
         return res.status(500).json({status:500,data:err,message:"error"});
     });   
 }
+
+module.exports.checkRoom = function(req, res){
+    // console.log(short.generate());
+       
+}
