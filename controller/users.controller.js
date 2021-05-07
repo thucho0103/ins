@@ -74,19 +74,22 @@ module.exports.GetAllPost = function(req, res){
         });  
 }
 
-module.exports.createRoom = function(req, res){
-    // console.log(short.generate());
-    const newRoom = {
-        userFirstId : req.body.user_first_id,
-        userSecondId : req.body.user_second_id,
-    }
-    Room.create(newRoom)
-    .then(result=>{
-        return res.status(200).json({status:200,data:result,message:"success"});      
-    })
-    .catch(err=>{
-        return res.status(500).json({status:500,data:err,message:"error"});
-    });   
+module.exports.getListRoom = function(req, res){
+    const id = req.jwtDecoded.data._id;
+    Room.find({
+        $or:[
+        {
+            userFirstId : id
+        },
+        {
+            userSecondId : id
+        }]})
+        .then(result=>{
+            return res.status(200).json({status:200,data:result,message:"success"});
+        })
+        .catch(err=>{
+            return res.status(500).json({status:500,data:err,message:"error"});
+        });
 }
 
 module.exports.getRoom = function(req, res){
