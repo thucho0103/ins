@@ -10,6 +10,7 @@ route.post('/updateinfor',Auth.isAuth,controller.postUpdateInfo);
 route.get('/all-post',controller.GetAllPost);
 // route.post('/create-room',controller.createRoom);
 route.post('/get-room',controller.getRoom);
-route.get('/get-list-room',controller.getListRoom);
+route.post('/get-list-room',controller.getListRoom);
+route.get('/get-list-messages',controller.getListMessages);
 
 module.exports = route;

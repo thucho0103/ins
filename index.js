@@ -58,16 +58,19 @@ app.post('*', function(req, res){
 
 // app.listen(port);
 var http = require('http').Server(app);
+
 var io = require('socket.io')(http,{
   cors: {
       origin: '*',
   }
 });
 const onConnection = (socket) => {
-  require('./helpers/socket.messages')(socket);
+  require('./helpers/socket.messages')(io, socket);
 }
 
 io.on("connection", onConnection);
+
+
 var server = http.listen(PORT, () => {
   console.log('server is running on port', server.address().port);
 });

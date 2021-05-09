@@ -14,9 +14,11 @@
     <div class="jumbotron">
         <h1 class="display-4">Send Message</h1>
         <br>
-        <input id = "name" class="form-control" placeholder="Name">
+        <input id ="user_first_id" class="form-control" placeholder="Name" value="60918c5627f8d643ed2c36f6">
         <br>
-        <textarea id = "message" class="form-control" placeholder="Your Message Here"></textarea>
+        <input id ="user_second_id" class="form-control" placeholder="Name" value="6090e083e685b63a779a0834">
+        <br>
+        <textarea id ="message" class="form-control" placeholder="Your Message Here"></textarea>
         <br>
         <button id="send" class="btn btn-success">Send</button>
     </div>
@@ -31,20 +33,17 @@
 	});
     $(() => {
         $("#send").click(()=>{
-            sendMessage({name: $("#name").val(), message: $("#message").val()});
+            sendMessage({user_first_id: $("#user_first_id").val(),user_second_id: $("#user_second_id").val(), message: $("#message").val()});
         })
         getMessages()
     })
-	var dataRoom = {
-	    room :"6093744d24ce591829d62ac8"
-	};
 
-    socket.emit("join_room",dataRoom);
-    socket.on('chat_text', addMessages)
+    socket.emit("join_room","60918c5627f8d643ed2c36f6");
+    socket.on('res_chat_text', addMessages)
 
     function addMessages(message){
 	    console.log(message);
-        $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+        $("#messages").append(`<h4> ${message.user_first_id} </h4> <p> ${message.message} </p>`)
     }
 
     function getMessages(){
@@ -55,8 +54,10 @@
 
     function sendMessage(message){
         message.room ="6093744d24ce591829d62ac8";
+        message.sender='';
+        message.images = [];
         socket.emit('chat_text',message);  
-      	addMessages(message);
+      	// addMessages(message);
     }
 </script>
 </body>

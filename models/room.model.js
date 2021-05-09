@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 var roomSchema = new mongoose.Schema({
-    userFirstId : String,
-    userSecondId : String,
-    roomName:String,
+    user_first_id : String,
+    user_second_id : String,
+    room_check:String,
+    room_name:String,
 },{
     versionKey: false // You should be aware of the outcome after set to false
 });
