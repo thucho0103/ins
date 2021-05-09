@@ -70,7 +70,6 @@ const onConnection = (socket) => {
 
 io.on("connection", onConnection);
 
-
 var server = http.listen(PORT, () => {
   console.log('server is running on port', server.address().port);
 });

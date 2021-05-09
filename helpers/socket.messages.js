@@ -15,11 +15,12 @@ module.exports = (io, socket) => {
   const chatText = (data) => {
     // console.log(data);
     io.to(data.user_first_id).to(data.user_second_id).emit("res_chat_text",data);
-
     Chat.create(data);
   } 
   const chatImage = (data) => {
-    //io.to(data.room).emit(data.messages);
+    console.log(data);
+    io.to(data.user_first_id).to(data.user_second_id).emit("res_chat_image",data);
+    Chat.create(data);
   } 
   socket.on("join_room", joinRoom);
   socket.on("leave_room", leaveRoom);

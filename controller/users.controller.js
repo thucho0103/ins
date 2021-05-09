@@ -91,9 +91,6 @@ module.exports.GetAllPost = function (req, res) {
 module.exports.getListRoom = function (req, res) {
   const id = req.body._id;
   const name = req.body.name;
-  // console.log(id);
-  // const text = "NguyễnDũngLêVăn Bình";
-  // console.log(text.replace(name,''));
   Room.find({
     $or: [
       {
@@ -106,7 +103,7 @@ module.exports.getListRoom = function (req, res) {
   })
     .then((result) => {
       result.forEach(element=>{
-        element.room_name.replace(name,'');
+        element.room_name = element.room_name.replace(name,'');
       })
       return res
         .status(200)
@@ -154,14 +151,20 @@ module.exports.getRoom = function (req, res) {
 };
 
 module.exports.getListMessages = function (req, res) {
+  var perPage = parseInt(req.query.limit) || 10;
+    var page = parseInt(req.query.page) || 1;
   const id = req.query.room_id;
   Chat.find({room:id})
-    .then((result) => {
-      return res
-        .status(200)
-        .json({ status: 200, data: result, message: "success" });
-    })
-    .catch((err) => {
-      return res.status(500).json({ status: 500, data: err, message: "error" });
-    });
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err,list_data){
+          Post.countDocuments({room:id}).exec(function(err,count){
+              if (err) {
+                  return res.status(500).json({status:500,data:err,message:"error"});
+              }
+              else{             
+                  return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
+              }               
+          })
+      });
 };

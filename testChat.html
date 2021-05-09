@@ -46,6 +46,13 @@
         $("#messages").append(`<h4> ${message.user_first_id} </h4> <p> ${message.message} </p>`)
     }
 
+    socket.on('res_chat_image', addImages)
+
+    function addImages(message){
+	    console.log(message);
+        $("#messages").append(`<h4> ${message.user_first_id} </h4> <img width="320" height="320" src="${message.images[0]}" >`)
+    }
+
     function getMessages(){
       // $.get('http://localhost:4000/messages', (data) => {
       //   data.forEach(addMessages);
@@ -53,10 +60,10 @@
     }
 
     function sendMessage(message){
-        message.room ="6093744d24ce591829d62ac8";
+        message.room ="6097676eec038f2f6857b3c9";
         message.sender='';
-        message.images = [];
-        socket.emit('chat_text',message);  
+        message.images = ['http://173.254.232.92:4000/1620115845669RrU6YV8rFzq4Aml.jpg'];
+        socket.emit('chat_image',message);  
       	// addMessages(message);
     }
 </script>

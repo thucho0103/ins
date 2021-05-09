@@ -1,5 +1,6 @@
 const Post = require('../models/post.model');
 const Users = require('../models/users.model');
+const Sticker = require('../models/sticker.model');
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
@@ -22,6 +23,34 @@ module.exports.GetAllPost = function(req, res){
         .limit(perPage)
         .exec(function(err,list_data){
             Post.countDocuments(typeFilter).exec(function(err,count){
+                if (err) {
+                    return res.status(500).json({status:500,data:err,message:"error"});
+                }
+                else{             
+                    return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
+                }               
+            })
+        });  
+}
+
+module.exports.SearchPost = function(req, res){
+    var perPage = parseInt(req.query.limit) || 10;
+    var page = parseInt(req.query.page) || 1;
+    const key = req.query.key || ''; 
+    Post.find({
+        $or: [
+          {
+            title: { $regex: key },
+          },
+          {
+            content: { $regex: key },
+          },
+        ],
+      })
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err,list_data){
+            Post.countDocuments().exec(function(err,count){
                 if (err) {
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }
@@ -72,49 +101,13 @@ const cheerio = require('cheerio'),
     axios = require('axios'),
     url = `https://www.chotot.com/toan-quoc/mua-ban-do-dien-tu`;
 
-module.exports.Crawl = function(req, res){     
-    // axios.get(url)
-    // .then((response) => {
-    //     let $ = cheerio.load(response.data);
-    //     var arr = [];
-    //     //console.log($('.wrapperAdItem___2woJ1 > a > div > div > div > noscript').text());    
-    //     $('.wrapperAdItem___2woJ1 > a').each(function (i, e) {   
-            
-    //         const imgtag = $(e).find('div > div > div > noscript').text();
-    //         const img = imgtag.slice($(e).text().indexOf('src=')+5);
-
-    //         const title = $(e).find('.adTitle___3SoJh').text();
-    //         const price = $(e).find('.adPriceNormal___puYxd').text();        
-    //         var post = {
-    //             picture :img.slice(img,img.indexOf('"')),
-    //             title :title,
-    //             price :price,
-    //             address :'Hồ Chí Minh',
-    //             dateUpload:new Date().getTime(),
-    //         }  
-    //         arr.push(post);           
-    //     })
-    //     return arr;
-    // })
-    // .then(array=>{         
-    //     Post.insertMany(array).then(function(){
-    //         console.log("Data inserted")  // Success
-    //     }).catch(function(error){
-    //         console.log(error)      // Failure
-    //     });
-    // })
-    // .catch(function (e) {
-    //     console.log(e);
-    // });
-        Post.find({picture:"https://static.chotot.com/storage/default_images/c2c_ad_image.jpg"}).then(function(data,err){
-            data.forEach(element => {
-                element.picture = "https://cdn.presslabs.com/wp-content/uploads/2018/10/upload-error.png";
-                element.save();
-            });
-            console.log(data)  // Success
-        }).catch(function(error){
-            console.log(error)      // Failure
-        });  
+module.exports.Crawl = function(req, res){
+    const list = req.body.data;
+    list.forEach(element=>{
+        element.link_original = 'http://beta.ads.api.techres.vn:3002'+ element.link_original;
+      })
+    Sticker.insertMany(req.body.data);
+    res.send(200);
 }
 
 // module.exports.UploadImage = function(req, res){   
