@@ -42,7 +42,7 @@ app.get('/',(req,res)=>{
     res.send("hello");
 });
 
-app.use('/sms',smsRoute);
+app.use('/stickers',smsRoute);
 app.use('/auth',authRoute);
 //app.use('/post',postRoute);
 app.use('/post',postRoute);
