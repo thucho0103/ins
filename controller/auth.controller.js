@@ -191,17 +191,17 @@ module.exports.postChangePassword = function (req, res) {
 
 const testTransporter = nodemailer.createTransport({
     host: 'smtp.mailgun.org',
-    port: 587,
+    port: 465,
     auth: {
-        user: 'postmaster@sandbox687af2e96ff44c0587109585ab70cd07.mailgun.org',
-        pass: 'ca166544aedfd6a1fad847159574c695-b6d086a8-57ccc7a2'
+        user: 'postmaster@sandbox0fee702a86ef4a9e981580a815256a41.mailgun.org',
+        pass: '1fa4e4f3bf69430d3d2e735b7d99582d-2a9a428a-16d1c72e'
     }
 });
 
 module.exports.testSendEmail = function (req, res) {
     const email = req.body.email;
     testTransporter.sendMail({
-        from: 'teamovie@movie.com',
+        from:"brad@sandbox0fee702a86ef4a9e981580a815256a41.mailgun.org",
         to: email,
         subject: 'Sending with Movie+',
         html: `

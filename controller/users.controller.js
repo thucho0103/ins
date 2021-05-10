@@ -103,6 +103,11 @@ module.exports.getListRoom = function (req, res) {
   })
     .then((result) => {
       result.forEach(element=>{
+        if(element.user_first_id != id){
+          var temp = element.user_first_id;
+          element.user_first_id = element.user_second_id;
+          element.user_second_id = temp;
+        }
         element.room_name = element.room_name.replace(name,'');
       })
       return res
