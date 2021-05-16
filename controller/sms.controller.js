@@ -18,6 +18,11 @@ module.exports.getListCategory = function(req,res){
             "link_original": "http://beta.ads.api.techres.vn:3002/public/stickers/customers/17_Minions/1.gif",
             "id_category": 18,
         },
+        {           
+            "name": "giphy.gif",
+            "link_original": "https://media.giphy.com/media/N60wb1jkaWAEM/giphy.gif",
+            "id_category": 12,
+        },
     ]
     return res.status(200).json({status:200,data:data,message:"success"});
 }

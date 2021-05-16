@@ -1,6 +1,7 @@
 const Post = require('../models/post.model');
 const Users = require('../models/users.model');
 const Sticker = require('../models/sticker.model');
+const Chat = require('../models/chat.model');
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
@@ -102,12 +103,18 @@ const cheerio = require('cheerio'),
     url = `https://www.chotot.com/toan-quoc/mua-ban-do-dien-tu`;
 
 module.exports.Crawl = function(req, res){
-    const list = req.body.data;
-    list.forEach(element=>{
-        element.link_original = 'http://beta.ads.api.techres.vn:3002'+ element.link_original;
-      })
-    Sticker.insertMany(req.body.data);
-    res.send(200);
+    // const list = req.body.data;
+    // console.log(req.body.data);
+    // // list.forEach(element=>{
+    // //     element.link_original = 'http://beta.ads.api.techres.vn:3002'+ element.link_original;
+    // //   })
+    // Sticker.insertMany(req.body.data);
+    // res.send(200);
+    Chat.deleteMany({images:[]}, function (err) {
+        if (err) return handleError(err);
+        // deleted at most one tank document
+        res.send(200);
+      });
 }
 
 // module.exports.UploadImage = function(req, res){   

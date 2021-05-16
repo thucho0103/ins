@@ -6,7 +6,11 @@ var chatSchema = new mongoose.Schema({
     user_first_id : String,
     user_second_id:String,
     sender:String,
-    images:[String]
+    images:[String],
+    createAt:{
+        type: Date,
+        default: Date.now
+    }
 },{
     versionKey: false // You should be aware of the outcome after set to false
 });

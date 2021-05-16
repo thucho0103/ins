@@ -1,6 +1,6 @@
-var Users = require("../models/users.model");
-var Post = require("../models/post.model");
-var Room = require("../models/room.model");
+const Users = require("../models/users.model");
+const Post = require("../models/post.model");
+const Room = require("../models/room.model");
 const Chat = require('../models/chat.model');
 
 module.exports.getCountPost = function (req, res) {
@@ -156,14 +156,15 @@ module.exports.getRoom = function (req, res) {
 };
 
 module.exports.getListMessages = function (req, res) {
-  var perPage = parseInt(req.query.limit) || 10;
-    var page = parseInt(req.query.page) || 1;
+  let perPage = parseInt(req.query.limit) || 10;
+  let page = parseInt(req.query.page) || 1;
   const id = req.query.room_id;
   Chat.find({room:id})
+        // .sort({date:-1})
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err,list_data){
-          Post.countDocuments({room:id}).exec(function(err,count){
+          Chat.countDocuments({room:id}).exec(function(err,count){
               if (err) {
                   return res.status(500).json({status:500,data:err,message:"error"});
               }
@@ -172,4 +173,21 @@ module.exports.getListMessages = function (req, res) {
               }               
           })
       });
+};
+
+module.exports.updateAvatar = function (req, res) {
+  const avatar = req.body.avatar_image;
+  console.log(req.jwtDecoded.data._id);
+  const id = req.jwtDecoded.data._id;
+  Users.findById(id)
+  then(result=>{
+    result.avatar = avatar;
+    result.save();
+    return res
+            .status(200)
+            .json({ status: 200, data: result, message: "success" });
+  })
+  .catch(err=>{
+    return res.status(500).json({ status: 500, data: err, message: "error" });
+  })
 };
