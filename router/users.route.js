@@ -12,6 +12,6 @@ route.get('/all-post',controller.GetAllPost);
 route.post('/get-room',controller.getRoom);
 route.post('/get-list-room',controller.getListRoom);
 route.get('/get-list-messages',controller.getListMessages);
-route.post('/update-avatar',controller.updateAvatar);
+route.post('/update-avatar',Auth.isAuth,controller.updateAvatar);
 
 module.exports = route;

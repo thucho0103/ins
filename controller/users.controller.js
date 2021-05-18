@@ -239,14 +239,18 @@ module.exports.updateAvatar = function (req, res) {
   const avatar = req.body.avatar_image;
   console.log(req.jwtDecoded.data._id);
   const id = req.jwtDecoded.data._id;
-  Users.findById(id);
-  then((result) => {
+  Users.findById(id)
+  .then(result => {
     result.avatar = avatar;
     result.save();
+    return result;
+  })
+  .then(data=>{
     return res
       .status(200)
-      .json({ status: 200, data: result, message: "success" });
-  }).catch((err) => {
+      .json({ status: 200, data: data, message: "success" });
+  })
+  .catch((err) => {
     return res.status(500).json({ status: 500, data: err, message: "error" });
   });
 };
