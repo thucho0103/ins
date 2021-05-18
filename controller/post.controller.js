@@ -110,11 +110,17 @@ module.exports.Crawl = function(req, res){
     // //   })
     // Sticker.insertMany(req.body.data);
     // res.send(200);
-    Chat.deleteMany({images:[]}, function (err) {
-        if (err) return handleError(err);
-        // deleted at most one tank document
+    Users.find()
+    .then(data=>{
+        data.forEach(element => {
+            element.avatar = 'http://173.254.232.92:4000/1621325914554boy.png';
+            element.save();
+        });
         res.send(200);
-      });
+    })
+    .catch(err=>{
+        console.log(err);
+    })
 }
 
 // module.exports.UploadImage = function(req, res){   
