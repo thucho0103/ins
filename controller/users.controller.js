@@ -213,7 +213,7 @@ module.exports.getListMessages = function (req, res) {
   let page = parseInt(req.query.page) || 1;
   const id = req.query.room_id;
   Chat.find({ room: id })
-    .sort({'createAt':-1})
+    .sort({'createAt':'descending'})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec(function (err, list_data) {
@@ -227,7 +227,7 @@ module.exports.getListMessages = function (req, res) {
             .status(200)
             .json({
               status: 200,
-              data: { limit: perPage, list: list_data, total_record: count },
+              data: { limit: perPage, list: list_data.reverse(), total_record: count },
               message: "success",
             });
         }
