@@ -213,7 +213,7 @@ module.exports.getListMessages = function (req, res) {
   let page = parseInt(req.query.page) || 1;
   const id = req.query.room_id;
   Chat.find({ room: id })
-    // .sort({date:-1})
+    .sort({'createAt':-1})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec(function (err, list_data) {

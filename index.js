@@ -1,11 +1,11 @@
-var express = require('express');
-var bodyParser =require('body-parser');
-var mongoose = require('mongoose');
-var cookieParser = require('cookie-parser');
-var cors = require('cors');
+const express = require('express');
+const bodyParser =require('body-parser');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 require('dotenv').config()
-var PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
 //mongoose.connect("mongodb+srv://movie:admin@movie.aoto6.gcp.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 const mongoString = process.env.MONGO_DB_CONNECT;
@@ -19,20 +19,20 @@ mongoose.connection.on("open", function() {
   console.log("Connected to MongoDB database.")
 });
 
-var smsRoute = require('./router/sms.route');
-var usersRoute = require('./router/users.route');
-var authRoute = require('./router/auth.route');
-var postRoute = require('./router/post.route');
-var Auth = require('./middlewares/auth.middleware');
+const smsRoute = require('./router/sms.route');
+const usersRoute = require('./router/users.route');
+const authRoute = require('./router/auth.route');
+const postRoute = require('./router/post.route');
+const Auth = require('./middlewares/auth.middleware');
 
-var app = express();
-var morgan = require('morgan')
+const app = express();
+const morgan = require('morgan')
 app.use(express.static('images'));
 app.use(morgan('combined'));
 app.use(cors());
 
 app.use(bodyParser.json({type: 'application/json'}));
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(urlencodedParser);
 app.use(cookieParser());
 
@@ -57,11 +57,11 @@ app.post('*', function(req, res){
 });
 
 // app.listen(port);
-var http = require('http').Server(app);
+const http = require('http').Server(app);
 
-var io = require('socket.io')(http,{
-  cors: {
-      origin: '*',
+const io = require('socket.io')(http,{
+  "cors": {
+      "origin": '*',
   }
 });
 const onConnection = (socket) => {
@@ -70,6 +70,6 @@ const onConnection = (socket) => {
 
 io.on("connection", onConnection);
 
-var server = http.listen(PORT, () => {
+const server = http.listen(PORT, () => {
   console.log('server is running on port', server.address().port);
 });
