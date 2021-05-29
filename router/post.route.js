@@ -12,6 +12,6 @@ route.post('/upload-image',controller.UploadImage);
 route.get('/get-image',controller.GetImage);
 route.post('/confirm-bought',controller.confirmBought);
 
-route.post('/crawl',controller.Crawl);
+route.get('/crawl',controller.Crawl);
 
 module.exports = route;

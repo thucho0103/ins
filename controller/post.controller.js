@@ -37,17 +37,9 @@ module.exports.GetAllPost = function(req, res){
 module.exports.SearchPost = function(req, res){
     var perPage = parseInt(req.query.limit) || 10;
     var page = parseInt(req.query.page) || 1;
-    const key = req.query.key || ''; 
-    Post.find({
-        $or: [
-          {
-            title: { $regex: key },
-          },
-          {
-            content: { $regex: key },
-          },
-        ],
-      })
+    const key = change_alias(req.query.key) || '';
+    console.log(key);
+    Post.find({slug: new RegExp(key,'i')})
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err,list_data){
@@ -110,17 +102,48 @@ module.exports.Crawl = function(req, res){
     // //   })
     // Sticker.insertMany(req.body.data);
     // res.send(200);
-    Users.find()
-    .then(data=>{
-        data.forEach(element => {
-            element.avatar = 'http://173.254.232.92:4000/1621325914554boy.png';
-            element.save();
-        });
-        res.send(200);
+    // Users.find()
+    // .then(data=>{
+    //     data.forEach(element => {
+    //         element.avatar = 'http://173.254.232.92:4000/1621325914554boy.png';
+    //         element.save();
+    //     });
+    //     res.send(200);
+    // })
+    // .catch(err=>{
+    //     console.log(err);
+    // })
+    Post.find().exec()
+    .then(result=>{
+        // result.save();
+        // result.forEach(element => {
+        //     element.slug = change_alias(element.title+'-'+element.content);
+        //     element.save();
+        // });
+        console.log(result[0]);
+        // Post.create(result[0]);
+        res.send(result);
     })
     .catch(err=>{
-        console.log(err);
+        res.send(err);
     })
+}
+
+function change_alias(alias) {
+    var str = alias;
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+    str = str.replace(/đ/g,"d");
+    str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|{|}|\||\\/g,"-");
+    str = str.replace(/ + /g," ");
+    str = str.replace(/\s/g,'-');
+    str = str.trim(); 
+    return str;
 }
 
 // module.exports.UploadImage = function(req, res){   

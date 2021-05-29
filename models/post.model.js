@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
+const slug = require('mongoose-slug-generator');
 const { getDateString } = require('../helpers/formatDate.helpers');
+
+mongoose.plugin(slug);
 
 var PostSchema = new mongoose.Schema({
     user_id: String,
@@ -7,6 +10,7 @@ var PostSchema = new mongoose.Schema({
     last_name: String,
     type : Number,
     title:String,
+    slug: { type: String, slug: "title" },
     images :[String],
     price : Number,
     content:String,
