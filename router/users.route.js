@@ -13,5 +13,7 @@ route.post('/get-room',controller.getRoom);
 route.post('/get-list-room',controller.getListRoom);
 route.get('/get-list-messages',controller.getListMessages);
 route.post('/update-avatar',Auth.isAuth,controller.updateAvatar);
+route.post('/post-key',Auth.isAuth,controller.addKey);
+route.get('/get-key',Auth.isAuth,controller.getKey);
 
 module.exports = route;
