@@ -72,7 +72,7 @@ module.exports.Create = function(req, res){
     console.log(req.jwtDecoded.data._id);
     Users.findOne({_id:req.jwtDecoded.data._id})
         .then(data=>{
-            console.log(data);
+            // console.log(data);
             const newPost = req.body;
             var addPost = {user_id:data._id,first_name:data.first_name,last_name:data.last_name, date_upload:Date.now()};
             const returnedTarget = Object.assign(newPost, addPost);

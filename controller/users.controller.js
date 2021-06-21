@@ -3,6 +3,7 @@ const Post = require("../models/post.model");
 const Room = require("../models/room.model");
 const Chat = require("../models/chat.model");
 const { modelName } = require("../models/post.model");
+const Key = require('../models/key.model');
 
 module.exports.getCountPost = function (req, res) {
   console.log(req.jwtDecoded.data._id);
@@ -253,4 +254,40 @@ module.exports.updateAvatar = function (req, res) {
   .catch((err) => {
     return res.status(500).json({ status: 500, data: err, message: "error" });
   });
+};
+
+module.exports.addKey = function (req, res) {
+
+  const id = req.jwtDecoded.data._id;
+  const key = {
+    user_id:id,
+    key:req.body.avatar_image.key,
+  }
+
+  Key.create(key)
+  .then(result=>{
+    return res
+    .status(200)
+    .json({ status: 200, data: result, message: "success" });
+  })
+  .catch((err) => {
+    return res.status(500).json({ status: 500, data: err, message: "error" });
+  });
+
+};
+
+module.exports.getKey = function (req, res) {
+
+  const id = req.jwtDecoded.data._id;
+
+  Key.find({user_id:id})
+  .then(result=>{
+    return res
+    .status(200)
+    .json({ status: 200, data: result, message: "success" });
+  })
+  .catch((err) => {
+    return res.status(500).json({ status: 500, data: err, message: "error" });
+  });
+  
 };
