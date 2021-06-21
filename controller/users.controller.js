@@ -261,7 +261,7 @@ module.exports.addKey = function (req, res) {
   const id = req.jwtDecoded.data._id;
   const key = {
     user_id:id,
-    key:req.body.avatar_image.key,
+    key:req.body.key,
   }
 
   Key.create(key)
