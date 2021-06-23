@@ -16,6 +16,7 @@ module.exports.login = function (req, res) {
 module.exports.postLogin = function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
+    console.log(email);
     Users.findOne({ email: email })
         .then(user => {
             if (!user) {

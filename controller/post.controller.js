@@ -14,6 +14,7 @@ module.exports.GetAllPost = function(req, res){
     var perPage = parseInt(req.query.limit) || 10;
     var page = parseInt(req.query.page) || 1;
     const type = req.query.type || -1; 
+    const prioritizeType = req.query.prioritize_type || -1; 
     var typeFilter = {};
     if (type != -1){
         typeFilter = {'type':type}
@@ -27,8 +28,20 @@ module.exports.GetAllPost = function(req, res){
                 if (err) {
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }
-                else{             
-                    return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
+                else{     
+                    if(prioritizeType = -1){
+                        return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
+                    }
+                    let arrData = [];
+                    list_data.forEach(element => {
+                        if(element.type == prioritizeType){
+                            arrData.unshift(element);
+                        }
+                        else{
+                            arrData.push(element);
+                        }                  
+                    }); 
+                    return res.status(200).json({status:200,data:{limit:perPage,list:arrData,total_record:count},message:"success"});
                 }               
             })
         });  
