@@ -29,7 +29,8 @@ module.exports.GetAllPost = function(req, res){
                     return res.status(500).json({status:500,data:err,message:"error"});
                 }
                 else{     
-                    if(prioritizeType = -1){
+                    // console.log(prioritizeType);
+                    if(parseInt(prioritizeType) == -1){
                         return res.status(200).json({status:200,data:{limit:perPage,list:list_data,total_record:count},message:"success"});       
                     }
                     let arrData = [];
