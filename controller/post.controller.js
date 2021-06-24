@@ -90,9 +90,10 @@ module.exports.Create = function(req, res){
             const newPost = req.body;
             var addPost = {user_id:data._id,first_name:data.first_name,last_name:data.last_name, date_upload:Date.now()};
             const returnedTarget = Object.assign(newPost, addPost);
-            //console.log(returnedTarget);
+        
             Post.create(returnedTarget)
             .then(result=>{
+                // console.log(result);
                 return res.status(200).json({status:200,data:result,message:"success"});      
             })
             .catch(err=>{

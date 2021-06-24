@@ -1,8 +1,10 @@
 
 module.exports.requirePost = function(req, res, next){
-    if(!req.body.type){
-        return res.status(422).json({status:200,data:null,message:"type is required"})
-    }
+    // console.log(req.body.type);
+    // if(req.body.type != null){
+    //     console.log(!req.body.type);
+    //     return res.status(422).json({status:200,data:null,message:"type is required"})
+    // }
     if(!req.body.title){
         return res.status(422).json({status:200,data:null,message:"title is required"})
     }
